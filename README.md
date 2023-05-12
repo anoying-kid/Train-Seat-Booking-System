@@ -1,16 +1,26 @@
-# cruv
+<p>
+    <img src="screenshots/and1.png" width="25%"/>
+    <img src="screenshots/and2.png" width="25%"/>
+    <img src="screenshots/iphone1.png" width="25%"/>
+    <img src="screenshots/iphone2.png" width="25%"/>
+</p>
 
-A new Flutter project.
+# Train Seat Booking System using Flutter
 
-## Getting Started
+    This widget is a system for booking train seats.
 
-This project is a starting point for a Flutter application.
+## Installation
 
-A few resources to get you started if this is your first Flutter project:
+Clone Repository
+```
+git clone https://github.com/anoying-kid/Train-Seat-Booking-System.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Get required libraries
+```
+flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Working
+
+<img src= "screenshots/android.gif" width="25%">

@@ -1,16 +1,16 @@
+import 'package:cruv/providers/seat_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SeatWidget extends StatelessWidget {
   final int start;
-  // final int end;
-  SeatWidget({required this.start, super.key});
+  const SeatWidget({required this.start, super.key});
 
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height - kToolbarHeight;
     final deviceWidth = MediaQuery.of(context).size.width;
-    return Container(
-      // color: Colors.pink,
+    return SizedBox(
       height: deviceHeight * 0.2,
       width: deviceWidth,
       child: Row(
@@ -38,7 +38,6 @@ class TwoSeater extends StatelessWidget {
     required this.deviceHeight,
     required this.deviceWidth,
     required this.start,
-    // required this.end,
   });
 
   final double deviceHeight;
@@ -48,7 +47,7 @@ class TwoSeater extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: deviceHeight * 0.3,
       width: deviceWidth * 0.2,
       child: Column(
@@ -105,21 +104,22 @@ class SingleSeat extends StatefulWidget {
 }
 
 class _SingleSeatState extends State<SingleSeat> {
-  // final FocusNode _cardFocusNode = FocusNode();
-
-  Color cardColor = Colors.blue.shade100;
-  bool hasFocus = false;
+  late Color cardColor;
+  late bool hasFocus;
 
   BorderSide getBorderSide(double border) {
     if (border == 0) {
       return BorderSide.none;
     } else {
-      return BorderSide(width: border);
+      return BorderSide(width: border * 10, color: Colors.blue.shade100);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final seatData = Provider.of<SeatDataProvider>(context);
+    final List<int> selectedSeats = seatData.selectedSeats;
+    final hasFocus = selectedSeats.contains(widget.seatNumber);
     return Container(
       width: widget.deviceWidth * 0.2,
       decoration: BoxDecoration(
@@ -135,18 +135,19 @@ class _SingleSeatState extends State<SingleSeat> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        color: cardColor,
+        color: (hasFocus)
+            ? Colors.blue.shade500
+            : Colors.blue.shade100,
         child: InkWell(
             borderRadius: BorderRadius.circular(15),
             onTap: () {
               if (hasFocus) {
+                seatData.removeSeat(widget.seatNumber);
                 cardColor = Colors.blue.shade100;
-                hasFocus = false;
               } else {
+                seatData.addSeat(widget.seatNumber);
                 cardColor = Colors.blue.shade500;
-                hasFocus = true;
               }
-              setState(() {});
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,72 +181,65 @@ class SixSeater extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: Colors.blue,
+    return SizedBox(
       height: deviceHeight * 0.2,
       width: deviceWidth * 0.6,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            // color: Colors.blue,
-            child: Row(
-              children: [
-                SingleSeat(
-                  deviceHeight: deviceHeight,
-                  deviceWidth: deviceWidth,
-                  seatName: 'LOWER',
-                  seatNumber: start,
-                  borderLeft: 1,
-                  borderTop: 1,
-                ),
-                SingleSeat(
-                  deviceWidth: deviceWidth,
-                  deviceHeight: deviceHeight,
-                  seatNumber: start + 1,
-                  seatName: 'MIDDLE',
-                  borderTop: 1,
-                ),
-                SingleSeat(
-                  deviceWidth: deviceWidth,
-                  seatName: 'UPPER',
-                  seatNumber: start + 2,
-                  deviceHeight: deviceHeight,
-                  borderTop: 1,
-                  borderRight: 1,
-                )
-              ],
-            ),
+          Row(
+            children: [
+              SingleSeat(
+                deviceHeight: deviceHeight,
+                deviceWidth: deviceWidth,
+                seatName: 'LOWER',
+                seatNumber: start,
+                borderLeft: 1,
+                borderTop: 1,
+              ),
+              SingleSeat(
+                deviceWidth: deviceWidth,
+                deviceHeight: deviceHeight,
+                seatNumber: start + 1,
+                seatName: 'MIDDLE',
+                borderTop: 1,
+              ),
+              SingleSeat(
+                deviceWidth: deviceWidth,
+                seatName: 'UPPER',
+                seatNumber: start + 2,
+                deviceHeight: deviceHeight,
+                borderTop: 1,
+                borderRight: 1,
+              )
+            ],
           ),
-          Container(
-            // color: Colors.blue,
-            child: Row(
-              children: [
-                SingleSeat(
-                  deviceHeight: deviceHeight,
-                  deviceWidth: deviceWidth,
-                  seatName: 'LOWER',
-                  seatNumber: start + 3,
-                  borderLeft: 1,
-                  borderBottom: 1,
-                ),
-                SingleSeat(
-                  deviceHeight: deviceHeight,
-                  deviceWidth: deviceWidth,
-                  seatName: 'MIDDLE',
-                  seatNumber: start + 4,
-                  borderBottom: 1,
-                ),
-                SingleSeat(
-                  deviceHeight: deviceHeight,
-                  deviceWidth: deviceWidth,
-                  seatName: 'UPPER',
-                  seatNumber: start + 5,
-                  borderRight: 1,
-                  borderBottom: 1,
-                )
-              ],
-            ),
+          Row(
+            children: [
+              SingleSeat(
+                deviceHeight: deviceHeight,
+                deviceWidth: deviceWidth,
+                seatName: 'LOWER',
+                seatNumber: start + 3,
+                borderLeft: 1,
+                borderBottom: 1,
+              ),
+              SingleSeat(
+                deviceHeight: deviceHeight,
+                deviceWidth: deviceWidth,
+                seatName: 'MIDDLE',
+                seatNumber: start + 4,
+                borderBottom: 1,
+              ),
+              SingleSeat(
+                deviceHeight: deviceHeight,
+                deviceWidth: deviceWidth,
+                seatName: 'UPPER',
+                seatNumber: start + 5,
+                borderRight: 1,
+                borderBottom: 1,
+              )
+            ],
           )
         ],
       ),
